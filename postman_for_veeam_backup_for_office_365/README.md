@@ -31,7 +31,7 @@
 ![VBO Postman Collection](images/vbo_postman_collection.png)
 
 * Set the following [variables](https://learning.getpostman.com/docs/postman/environments_and_globals/variables/) in Postman:
-  * `baseUrl`: Base URL of Veeam Availability Console web server
+  * `baseUrl`: Base URL of Veeam Backup for Office 365 RESTful API
   * `vbo-username`: Username login
   * `vbo-password`: Password login
 
