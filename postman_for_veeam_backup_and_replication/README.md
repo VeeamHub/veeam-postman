@@ -23,7 +23,7 @@
 
    * `v1.1-rev0` is the latest API version and revision that was released with Veeam Backup & Replication v12. More details are available on the [Versioning](https://helpcenter.veeam.com/docs/backup/vbr_rest/versioning.html) page of the REST API Reference Guide.
 
-1. Import the `swagger.json` file as a Postman Collection.
+1. Import the `swagger.json` file with the `OpenAPI 3.0 with a Postman Collection` option.
 
    ![Postman import](images/postman_import.png)
 
@@ -47,9 +47,9 @@
 
    * Add the following variables:
 
-     * `baseUrl`: Base URL of Veeam Backup & Replication REST API
+     * `baseUrl`: Base URL or IP address of Veeam Backup & Replication REST API
 
-       * You must include `https://` at the beginning of the URL and `:9419` at the end of the URL
+       * You must include `https://` at the beginning of the URL and `:9419` at the end of the URL, e.g., `https://10.10.10.10:9419`
 
      * `vbr-username`: Username to authenticate with the VBR server
 
