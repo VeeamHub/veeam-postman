@@ -1,65 +1,122 @@
 # Postman for Veeam Backup & Replication (VBR)
 
-[Postman](https://www.getpostman.com/) is a tool that’s build by developers for developers. It provides a complete API development environment with stream-lined collaboration to help any number of use cases including testing, development, & product development. They do have both [free and paid versions](https://www.getpostman.com/pricing) so if you are looking at getting started, they make it easy and you can work your way up.
+[Postman](https://www.postman.com/) is an API platform for building and using APIs. There are both free and paid plans available which are detailed on their [pricing](https://www.postman.com/pricing/) page.
 
 ## Requirements
 
-* Veeam Backup & Replication v11
-* [Postman](https://www.getpostman.com/)
+* Veeam Backup & Replication v12
+* [Postman](https://www.postman.com/)
 
 ## Getting Started
 
-* Get the VBR OpenAPI specification
-  * To get this, you'll have to navigate to a URL hosted on your VBR server
-  * Click the link shown below which triggers a file download:
-    * `https://<vbr_server>:9419/swagger/ui/index.html`
+1. Obtain the VBR REST API specification.
 
-![VBR OpenAPI specification](images/vbr_openapi_specification.png)
+   ![Swagger UI](images/vbr_restapi_swagger.png)
 
-* Import the file we just downloaded into Postman
+   * The REST API specification is defined and described in a single document that uses and conforms to the [OpenAPI 3.0 specification](https://swagger.io/specification/v3/).
+  
+   * The VBR server hosts a Swagger UI where you can browse the API and try it out. More details are available in the [Veeam Backup & Replication REST API Reference Guide](https://helpcenter.veeam.com/docs/backup/vbr_rest/evaluation_swagger_ui.html).
+  
+   * You can download a `swagger.json` file from your VBR server that contains the REST API specification at the following address by default:
 
-![Postman Import](images/postman_import.png)
+   * `https://<vbr_server_ip_address>:9419/swagger/v1.1-rev0/swagger.json`
 
-* Make sure `Generate collection from imported APIs` is checked
+   * `v1.1-rev0` is the latest API version and revision that was released with Veeam Backup & Replication v12. More details are available on the [Versioning](https://helpcenter.veeam.com/docs/backup/vbr_rest/versioning.html) page of the REST API Reference Guide.
 
-![Generate Collection checkbox](images/postman_import_generate.png)
+1. Import the `swagger.json` file as a Postman Collection.
 
-* Click `Import`
-  * **Wait...be patient!**
-* Once imported, it will show up in your Postman Collections as shown below:
+   ![Postman import](images/postman_import.png)
 
-![VBR Postman Collection](images/vbr_postman_collection.png)
+   ![Postman import dialog](images/postman_import_dialog.png)
 
-* Set the following [variables](https://learning.getpostman.com/docs/postman/environments_and_globals/variables/) in Postman:
-  * `baseUrl`: Base URL of Veeam Backup & Replication RESTful API
-  * `vbr-username`: Username login
-  * `vbr-password`: Password login
+   * _Wait a few moments while the API is imported._
 
-* Open the newly imported collection and navigate to the `Create Token` API call
-* Click on the `Body` tab
-* Update fields as shown below:
+   * The API will be imported as a collection.
 
-![VBR Login Body](images/login_body.png)
+   ![Postman import complete](images/postman_import_complete.png)
 
-* Click on the `Tests` tab
-* Copy/Paste the code from [here](automated_auth_test.js) in this section
+1. Create an environment to store [variables](https://learning.postman.com/docs/sending-requests/variables/).
 
-![VBR Login Tests](images/login_test.png)
+   ![Postman create environment](images/postman_environment_create.png)
 
-* Click `Save`
-* Edit the root folder of the collection
+   * Select `Environments` on the left, then `Create Environment`.
 
-![VBR Collection Edit](images/vbr_collection_edit.png)
+   ![Postman create variables](images/postman_environment_variables.png)
 
-* Navigate to the `Authorization` tab
-* Choose _Type:_ `Bearer Token`
-* Enter for _Token:_ `{{vbr_access_token}}`
-* Click `Update`
+   * Give the environment a name, e.g., `VBR 12`.
 
-![VBR Collection Auth](images/vbr_collection_auth.png)
+   * Add the following variables:
 
-At this point, you've now automated auth for **all** API calls! All you have to do when using an API call in this collection is make sure that `Authorization` is set to _Type:_ `Inherit auth from parent`
+     * `baseUrl`: Base URL of Veeam Backup & Replication REST API
 
-![VBR Auth Type](images/auth_type.png)
+       * You must include `https://` at the beginning of the URL and `:9419` at the end of the URL
 
-You can now begin using Postman with the Veeam Backup & Replication RESTful API!
+     * `vbr-username`: Username to authenticate with the VBR server
+
+     * `vbr-password`: Password to authenticate with the VBR server
+
+       * For the password variable, set the Type to `secret` to hide it
+
+   * Select `Save` to save the environment and variables.
+
+1. Set up authorization for the collection.
+
+   ![Postman collection authorization](images/postman_collection_auth.png)
+
+   * Switch to the Collections view.
+
+   * Select the root folder of the `Veeam Backup & Replication REST API` collection.
+
+   * Select the `Authorization` tab.
+
+   * In the `Type` dropdown menu, select `Bearer Token`.
+
+   * In the `Token` field, add `{{vbr_access_token}}`.
+
+   * In the top right of the window, select the `VBR 12` environment.
+
+   * Select `Save`.
+
+1. Configure `Authorization` for the `Get Access Token` API call.
+
+   ![Get Access Token authorization](images/postman_access_auth.png)
+
+   * Expand the collection to `api/v1/oauth2/token` and select the `Get Access Token` API call.
+
+   * Select the `Authorization` tab.
+
+   * In the `Type` dropdown menu, select `No Auth`.
+
+1. Configure `Body` for the `Get Access Token` API call.
+
+   ![Get Access Token body](images/postman_access_body.png)
+
+   * Select the `Body` tab.
+
+   * Set the fields as follows:
+
+     * `grant_type` : `password`
+
+     * `username` : `{{vbr-username}}`
+
+     * `password` : `{{vbr-password}}`
+
+     * Disable / uncheck the others
+
+1. Configure `Tests` for the `Get Access Token` API call.
+
+   ![Get Access Token tests](images/postman_access_tests.png)
+
+   * Select the `Tests` tab.
+
+   * Copy & paste the code from the [automated_auth_test.js](automated_auth_test.js) file.
+
+   * Select `Save` to save your changes to the API call.
+
+1. Select `Send` on the `Get Access Token` API call to authenticate.
+
+   * You have authenticated with the VBR REST API and are now ready to start using other methods!
+
+All you have to do when using an API call in this collection is make sure that the authorization type is set to `Inherit auth from parent`.
+
+![VBR Auth Type](images/postman_vbr_restapi_auth.png)
