@@ -23,15 +23,17 @@
 
    * `v1.1-rev0` is the latest API version and revision that was released with Veeam Backup & Replication v12. More details are available on the [Versioning](https://helpcenter.veeam.com/docs/backup/vbr_rest/versioning.html) page of the REST API Reference Guide.
 
+1. Create a workspace.
+
+   * Refer to the Postman documentation for [Creating Workspaces](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/).
+
 1. Import the `swagger.json` file with the `OpenAPI 3.0 with a Postman Collection` option.
 
    ![Postman import](images/postman_import.png)
 
    ![Postman import dialog](images/postman_import_dialog.png)
 
-   * _Wait a few moments while the API is imported._
-
-   * The API will be imported as a collection.
+   * _Wait a few moments while the API is imported. It may take some time._
 
    ![Postman import complete](images/postman_import_complete.png)
 
